@@ -9,7 +9,3 @@
         <title>Be-Healthy</title>
     </head>
     <body>
-        <header>
-            <a href="/Be-Healthy/index.php">Accueil</a> <br>
-            <a href="/Be-Healthy/repas/calorie.php">Page Calorie</a>
-        </header>
