@@ -1,6 +1,7 @@
 
 body {
     padding-bottom: 70px;
+    background-color: #f2f0ec;
     margin: 0;
 }
 
@@ -33,6 +34,7 @@ body {
         padding: 0;
     }
 
+    /* Icones de la barre de navigation */
     .bottom-navivation > a {
         display: flex;
         flex-direction: row;
@@ -42,8 +44,36 @@ body {
         height: 100%;
     }
 
+    /* SVG des icones de la barre de navigation */
     .bottom-navivation > a > svg {
         width: 32px;
         height: 32px;
     }
+
+
+    /* Page Calories */
+    .kcal-progression {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-kcal {
+        position: absolute;
+        text-align: center;
+    }
+
+    .calories, .unit {
+        display: block;
+        color: #D3B3F2;
+    }
+
+    .calories {
+        font-size: 45px;
+    }
+
+    .unit {
+        font-size: 20px;
+    }
+
 }
