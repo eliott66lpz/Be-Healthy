@@ -18,15 +18,15 @@ function authentifierUser(string $email, string $mdp): ?string {
 
     $stmt = $connexion->prepare("SELECT * FROM utilisateur WHERE email = :email");
     $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+    $user = $stmt->fetch();
     $stmt->closeCursor();
 
     if (!$user) {
         return "Aucun compte associé à cette adresse e-mail.";
     }
 
-    if(empty($user['mdp'])){
-        return "Ce compte est associé à un compte Google, veuillez utiliser le bouton associé";
+    if (empty($user['mdp'])) {
+        return "Ce compte est associé à un compte Google, veuillez utiliser le bouton associé.";
     }
 
     if (!password_verify($mdp, $user['mdp'])) {
@@ -34,7 +34,7 @@ function authentifierUser(string $email, string $mdp): ?string {
     }
 
     $_SESSION['user'] = [
-        'id'            => (int)$user['id'],
+        'id'            => (int)$user['id_user'], // id_user pour correspondre à votre BDD
         'nom'           => $user['nom'],
         'prenom'        => $user['prenom'],
         'email'         => $user['email'],
@@ -49,137 +49,65 @@ function authentifierUser(string $email, string $mdp): ?string {
     exit();
 }
 
-function creerUser(string $nom, string $prenom, string $email, string $mdp, DateTime $dateNaissance, string $sexe): ?string{
-
-    $connexion = Connexion();
-
-    $stmt = $connexion->prepare("SELECT * FROM utilisateur WHERE email = :email");
-    $stmt->execute(['email' => $email]);
-    $user = $stmt->fetch();
-    $stmt->closeCursor();
-
-    if($user){
-        return "Cette adresse-mail est déja utilisée";
-    }
-
-    $hashMdp    = password_hash($mdp, PASSWORD_DEFAULT);
-
-    $requete = $connexion->prepare(
-        "INSERT INTO utilisateur (nom, prenom ,email, mdp, dateNaissance, sexe) 
-                    VALUES (:nom, :prenom, :email, :mdp, :dateNaissance, :sexe)"
-    );
-    $reussite = $requete->execute([
-        'nom' => $nom,
-        'prenom' => $prenom,
-        'email'  => $email,
-        'mdp'    => $hashMdp,
-        'dateNaissance' => $dateNaissance->format('Y-m-d'),
-        'sexe'  => $sexe
-    ]);
-
-    if(!$reussite){
-        return "Problème lors de la création du compte";
-    }
-
-    $_SESSION['user'] = [
-        'id'     => (int)$connexion->lastInsertId(),
-        'nom' => $nom,
-        'prenom' => $prenom,
-        'email'  => $email,
-        'mdp'    => $hashMdp,
-        'dateNaissance' => $dateNaissance->format('d/m/Y'),
-        'sexe'  => $sexe
-    ];
-
-    return null;
-}
-
-function creerToken(string $email): ?string{
+function creerUser(string $nom, string $prenom, string $email, string $mdp, ?DateTime $dateNaissance, string $sexe): ?string {
     $connexion = Connexion();
 
     $stmt = $connexion->prepare("SELECT id_user FROM utilisateur WHERE email = :email");
     $stmt->execute(['email' => $email]);
-    $user = null;
-    $user->fetch();
-
-    if(!$user){
-        return null;
+    if ($stmt->fetch()) {
+        return "Cette adresse email est déjà utilisée.";
     }
 
-    $delete = $connexion->prepare("DELETE FROM motdepasseoublie WHERE id_user := id_user");
-    $delete->execute(['user_id' => $user['id']]);
-
-    $token = bin2hex(random_bytes(64));
-    $dateExpiration = (new DateTime())->modify('+15 minutes')->format('Y-m-d H:i:s');
-
-    $insert = $connexion->prepare(
-        "INSERT INTO motDePasseOublie (id_user, token ,dateExpiration) 
-                    VALUES (:user_id, :token, :dateExpiration)"
-    );
-
-    $reussite = $insert->execute([
-        'user_id' => $user[id],
-        'token' => $token,
-        'dateExpiration' => $dateExpiration
-
-    ]);
-    return $token;
-}
-
-function verifierTokenMdp(string $token): ?int
-{
-    $connexion = Connexion();
-
-    $tokenHash = hash('sha256', $token);
-
-    $stmt = $connexion->prepare(
-        "SELECT id_user FROM motdepasseoublie WHERE token = :token AND dateExpiration > NOW()"
-    );
-    $stmt->execute(['token' => $tokenHash]);
-    $reset = $stmt->fetch();
-
-    return $reset ? (int)$reset['user_id'] : null;
-}
-
-function reinitisialiserMdp(string $userId, string $mdp) : bool{
-    $connexion = Connexion();
     $hashMdp = password_hash($mdp, PASSWORD_DEFAULT);
+    $dateSql = $dateNaissance ? $dateNaissance->format('Y-m-d') : null;
 
-    $stmt = $connexion->prepare("UPDATE utilisateur SET mdp = :mdp WHERE id_ligue =:id");
-    $succes = $stmt->execute([
-        'mdp' => $hashMdp,
-        'id' => $userId
+    $requete = $connexion->prepare(
+        "INSERT INTO utilisateur (nom, prenom, email, mdp, dateNaissance, sexe) 
+         VALUES (:nom, :prenom, :email, :mdp, :dateNaissance, :sexe)"
+    );
+
+    $reussite = $requete->execute([
+        'nom'           => $nom,
+        'prenom'        => $prenom,
+        'email'         => $email,
+        'mdp'           => $hashMdp,
+        'dateNaissance' => $dateSql,
+        'sexe'          => $sexe
     ]);
 
-    if ($succes) {
-        $del = $connexion->prepare("DELETE FROM motdepasseoublie WHERE id_user = :user_id");
-        $del->execute(['user_id' => $userId]);
+    if (!$reussite) {
+        return "Problème lors de la création du compte.";
     }
 
-    return $succes;
+    $_SESSION['user'] = [
+        'id'            => (int)$connexion->lastInsertId(),
+        'nom'           => $nom,
+        'prenom'        => $prenom,
+        'email'         => $email,
+        'dateNaissance' => $dateNaissance ? $dateNaissance->format('d/m/Y') : null,
+        'sexe'          => $sexe
+    ];
 
+    return null;
 }
 
 function connecterOuCreerUserGoogle(string $googleId, string $email, string $prenom, string $nom): void
 {
     $connexion = Connexion();
 
-    // Vérifier si l'utilisateur existe déjà via son compte Google ou son email
     $stmt = $connexion->prepare("SELECT * FROM utilisateur WHERE google_id = :gid OR email = :email");
     $stmt->execute(['gid' => $googleId, 'email' => $email]);
     $user = $stmt->fetch();
 
     if ($user) {
-        // Si l'utilisateur existait déjà par formulaire classique, on associe son compte Google
         if (empty($user['google_id'])) {
             $update = $connexion->prepare("UPDATE utilisateur SET google_id = :gid WHERE id_user = :id");
-            $update->execute(['gid' => $googleId, 'id' => $user['id']]);
+            $update->execute(['gid' => $googleId, 'id' => $user['id_user']]);
         }
-        $userId = (int)$user['id'];
+        $userId = (int)$user['id_user'];
         $nom    = $user['nom'];
         $prenom = $user['prenom'];
     } else {
-        // Premier enregistrement de l'utilisateur Google
         $sql = "INSERT INTO utilisateur (nom, prenom, email, google_id, mdp, dateNaissance, sexe) 
                 VALUES (:nom, :prenom, :email, :gid, NULL, NULL, 'non-precise')";
         $insert = $connexion->prepare($sql);
@@ -192,7 +120,6 @@ function connecterOuCreerUserGoogle(string $googleId, string $email, string $pre
         $userId = (int)$connexion->lastInsertId();
     }
 
-    // Initialisation de la session
     $_SESSION['user'] = [
         'id'     => $userId,
         'nom'    => $nom,
@@ -201,4 +128,56 @@ function connecterOuCreerUserGoogle(string $googleId, string $email, string $pre
     ];
 }
 
+function suppUtilisateur(int $userId): bool {
+    $connexion = Connexion();
 
+    $stmt = $connexion->prepare("DELETE FROM utilisateur WHERE id_user = :userId");
+    $succes = $stmt->execute(['userId' => $userId]);
+
+    if ($succes) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+        $_SESSION = [];
+        session_destroy();
+    }
+
+    return $succes;
+}
+
+function modifierMdp(int $userId, string $mdp, string $nvMdp): ?string {
+    $connexion = Connexion();
+
+    $stmt = $connexion->prepare("SELECT mdp FROM utilisateur WHERE id_user = :id");
+    $stmt->execute(['id' => $userId]);
+    $user = $stmt->fetch();
+
+    if (!$user || empty($user['mdp'])) {
+        return "Ce compte est géré par Google et ne possède pas de mot de passe.";
+    }
+
+    if (!password_verify($mdp, $user['mdp'])) {
+        return "Le mot de passe actuel est incorrect.";
+    }
+
+    $nvMdpHash = password_hash($nvMdp, PASSWORD_DEFAULT);
+    $update = $connexion->prepare("UPDATE utilisateur SET mdp = :mdp WHERE id_user = :id");
+    $update->execute(['mdp' => $nvMdpHash, 'id' => $userId]);
+
+    return null; // Succès (aucune erreur)
+}
+
+function modifierEmail(int $userId, string $nvEmail): ?string {
+    $connexion = Connexion();
+
+    $check = $connexion->prepare("SELECT id_user FROM utilisateur WHERE email = :email AND id_user != :id");
+    $check->execute(['email' => $nvEmail, 'id' => $userId]);
+    if ($check->fetch()) {
+        return "Cette adresse email est déjà utilisée par un autre compte.";
+    }
+
+    $update = $connexion->prepare("UPDATE utilisateur SET email = :email WHERE id_user = :id");
+    $update->execute(['email' => $nvEmail, 'id' => $userId]);
+
+    return null; // Succès (aucune erreur)
+}
