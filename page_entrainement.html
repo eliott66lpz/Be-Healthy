@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be Healthy - Page Entraînements</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="mobile-frame">
+        <span class="page-label">Page entraînements</span>
+
+        <!-- Barre de recherche -->
+        <div class="search-container">
+            <input type="text" id="searchInput" placeholder="RECHERCHER UN MUSCLE OU EXERCICE">
+        </div>
+
+        <!-- Menus déroulants (Muscles, Séances, Exercices) -->
+        <div class="dropdown-group">
+            <select id="muscleSelect" class="pill-dropdown">
+                <option value="">Muscles &#9660;</option>
+                <option value="pectoraux">Pectoraux</option>
+                <option value="epaules">Épaules</option>
+                <option value="biceps">Biceps</option>
+                <option value="triceps">Triceps</option>
+                <option value="abdomen">Abdomen</option>
+                <option value="dorsaux">Dorsaux</option>
+                <option value="quadriceps">Quadriceps</option>
+            </select>
+
+            <select id="seanceSelect" class="pill-dropdown">
+                <option value="">Séances &#9660;</option>
+                <option value="pecs_triceps">Pecs & Triceps</option>
+                <option value="haut_corps">Haut du Corps</option>
+                <option value="core_abs">Core & Abs</option>
+                <option value="leg_day">Leg Day</option>
+            </select>
+
+            <select id="exerciceSelect" class="pill-dropdown">
+                <option value="">Exercices &#9660;</option>
+                <option value="developpe_couche">Développé Couché</option>
+                <option value="elevation_laterale">Élévation Latérale</option>
+                <option value="pompes">Pompes</option>
+                <option value="curl_biceps">Curl Biceps</option>
+                <option value="dips">Dips</option>
+                <option value="crunch">Crunch Abdominal</option>
+                <option value="squat">Squat</option>
+                <option value="tractions">Tractions</option>
+            </select>
+        </div>
+
+        <!-- Muscle sélectionné -->
+        <div class="muscle-badge">
+            <span id="selectedMuscleName">ABDOMEN</span>
+        </div>
+
+        <!-- Visuel du corps humain -->
+        <div class="body-wrapper">
+            <img src="D:/SAE/be-healthy/image/corps.PNG" alt="Corps humain interactif" class="body-image">
+        </div>
+
+        <!-- Bouton VOIR SÉANCES -->
+        <button id="btnVoirSeances" class="btn-primary-pill">VOIR SÉANCES</button>
+
+        <!-- Barre de navigation inférieure -->
+        <nav class="bottom-navbar">
+            <a href="accueil.php" class="nav-icon">🏠</a>
+            <a href="entrainement.php" class="nav-icon active">💪</a>
+            <a href="calories.php" class="nav-icon">🍎</a>
+            <a href="profil.php" class="nav-icon">👤</a>
+            <a href="parametres.php" class="nav-icon">⚙️</a>
+        </nav>
+    </div>
+
+</body>
+</html>
