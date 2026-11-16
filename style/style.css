@@ -3,6 +3,25 @@ body {
     padding-bottom: 70px;
     background-color: #f2f0ec;
     margin: 0;
+    font-family: 'Anton', sans-serif;
+}
+
+@font-face {
+    font-family: "Anton";
+    src:
+        local('./fonts/Anton'),
+        url('./fonts/Anton-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src:
+            local('./fonts/Poppins'),
+            url('./fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
 @media (max-width: 768px) and (orientation: portrait) {
@@ -76,4 +95,8 @@ body {
         font-size: 20px;
     }
 
+    /* Ajout des repas - Page Calories */
+    .meal label {
+        font-family: 'Poppins', sans-serif;
+    }
 }
