@@ -1,11 +1,16 @@
-<?php require_once __DIR__ . '/../includes/header.php'; ?>
+<?php require_once __DIR__ . '/../config/init.php'; ?>
+<?php
+    //requireLogin();
 
-    <main inert>
+?>
+
+<?php require_once __DIR__ . '/../includes/header.php'; ?>
+    <main>
         <h2>Calories de ce jour</h2>
 
         <div class="kcal-progression">
             <!-- Kcal progression logo -->
-            <img src="/Be-Healthy/style/icons/calorie/bar-kcal.svg">
+            <img src="/Be-Healthy/style/icons/calorie/bar-kcal.svg" alt="Barre des calories">
 
             <div class="text-kcal">
                 <span class="calories">2200</span>
@@ -13,46 +18,35 @@
             </div>
         </div>
 
-        <div>
-            <form method="POST" class="meal" action="../scripts/meal/add-meal.js">
-                <div class="breakfast">
-                    <fieldset>
-                        <!-- breakfast logo -->
-                        <img src="/Be-Healthy/style/icons/calorie/breakfast.svg">
+        <div class="meal">
+            <div>
+                <fieldset>
+                    <!-- breakfast logo -->
+                    <img src="/Be-Healthy/style/icons/calorie/breakfast.svg" alt="Logo petit déjeuner">
+                    <label>Petit-Déjeuner</label>
+                    <a href="/Be-Healthy/meal/choose-meal.php?type=petit_dejeuner" class="btnAddMeal">+</a>
+                </fieldset>
+            </div>
 
-                        <label>Petit-Déjeuner</label>
-                        <button type="submit" name="type-repas" value="petit_dejeuner">+</button>
-                    </fieldset>
-                </div>
+            <div>
+                <fieldset>
+                    <!-- lunch logo -->
+                    <img src="/Be-Healthy/style/icons/calorie/lunch.svg" alt="Logo déjeuner">
+                    <label>Déjeuner</label>
+                    <a href="/Be-Healthy/meal/choose-meal.php?type=dejeuner" class="btnAddMeal">+</a>
+                </fieldset>
+            </div>
 
-                <div class="lunch">
-                    <fieldset>
-                        <!-- lunch logo -->
-                        <img src="/Be-Healthy/style/icons/calorie/lunch.svg">
-
-                        <label>Déjeuner</label>
-                        <button onclick="dejeuner.showModal()">+</button>
-
-                        <dialog id="dejeuner">
-                            <h2>Hello !</h2>
-                            <p>Ceci est une popup native.</p>
-                            <button onclick="dejeuner.close()">Fermer</button>
-                        </dialog>
-                    </fieldset>
-                </div>
-
-                <div class="dinner">
-                    <fieldset>
-                        <!-- dinner logo -->
-                        <img src="/Be-Healthy/style/icons/calorie/dinner.svg">
-
-                        <label>Dîner</label>
-                        <button type="submit" name="type-repas" value="diner">+</button>
-                    </fieldset>
-                </div>
-            </form>
+            <div>
+                <fieldset>
+                    <!-- dinner logo -->
+                    <img src="/Be-Healthy/style/icons/calorie/dinner.svg" alt="Logo dîner">
+                    <label>Dîner</label>
+                    <a href="/Be-Healthy/meal/choose-meal.php?type=diner" class="btnAddMeal">+</a>
+                </fieldset>
+            </div>
         </div>
 
     </main>
-    <script src="/Be-Healthy/scripts/meal/add-meal.js"></script>
-<?php require_once __DIR__ . '/../includes/footer.php';
+
+<?php require_once __DIR__ . '/../includes/footer.php';?>

@@ -1,7 +1,7 @@
 
 body {
     padding-bottom: 70px;
-    background-color: #f2f0ec;
+    background-color: #f5f3f0;
     margin: 0;
     font-family: 'Anton', sans-serif;
 }
@@ -40,17 +40,19 @@ body {
 
     /* Barre de navigation */
     .bottom-navivation {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        background-color: #f5f3f0;
         position: fixed;
         width: 100%;
         height: 65px;
         bottom: 0;
         left: 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-around;
-        align-items: center;
         margin: 0;
         padding: 0;
+        z-index: 1;
     }
 
     /* Icones de la barre de navigation */
@@ -71,6 +73,11 @@ body {
 
 
     /* Page Calories */
+    main h2 {
+        text-align: center;
+        font-family: 'Anton', sans-serif;
+    }
+
     .kcal-progression {
         display: flex;
         justify-content: center;
@@ -95,8 +102,207 @@ body {
         font-size: 20px;
     }
 
-    /* Ajout des repas - Page Calories */
-    .meal label {
+    .meal {
+        display: flex;
+        flex-direction: column;
+        padding: 0 20px;
+        gap: 15px;
+        margin-top: 30px;
+    }
+
+    .meal fieldset, #mealDialog fieldset{
+        display: flex;
+        align-items: center;
+        background-color: white;
+        border: 2px solid #D3B3F2;
+        border-radius: 15px;
+        padding: 15px 20px;
+        gap: 20px;
+    }
+
+    .meal fieldset img, #mealDialog fieldset img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .meal fieldset label, #mealDialog fieldset label {
+        flex: 1;
         font-family: 'Poppins', sans-serif;
+        text-transform: uppercase;
+        font-size: 1.2rem;
+        color: #858585;
+    }
+
+    .btnAddMeal, .favoriteMeals, #searchExistingMeal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        border: 0;
+        border-radius: 50%;
+        color: white;
+        background-color: #D3B3F2;
+        font-size: 1.2rem;
+        text-decoration: none;
+    }
+
+    /* Ajout des repas préexistants - Pop-up Calories */
+    .meal-dialog {
+        width: min(92vw, 400px);;
+        height: 84dvh;
+        max-height: 84dvh;
+        border-radius: 12px;
+        background-color: #f5f3f0;
+        padding: 20px 18px;
+        border: none;
+        font-family: 'Poppins', sans-serif;
+        overflow: hidden;
+        box-sizing: border-box;
+        overscroll-behavior: contain;
+    }
+
+    .meal-dialog[open]{
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .dialogHeader {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        min-height: 40px;
+    }
+
+    .dialogTitle {
+        text-align: center;
+        padding: 0 44px;
+        margin: 0;
+        font-weight: 400;
+        font-size: 1.45rem;
+        color: #858585;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .btnCloseDialog {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 38px;
+        width: 38px;
+        border-radius: 50%;
+        border: 2px solid #858585;
+        background-color: white;
+        color: #858585;
+        font-size: 1.5rem;
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translateY(-50%);
+    }
+
+    .dialogSidebar {
+        display: flex;
+        align-items: center;
+        text-transform: uppercase;
+        text-align: left;
+        width: 100%;
+        border-radius: 50px;
+        border: 2px solid #D3B3F2;
+        color: #858585;
+        font-family: 'Poppins', sans-serif;
+        gap: 22px;
+        padding: 12px 22px;
+        background-color: white;
+        box-sizing: border-box;
+    }
+
+    .dialogSidebarIcon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .dialogSidebar--search input{
+        flex: 1;
+        border: none;
+        background: transparent;
+        font-size: 0.95rem;
+        color: #858585;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .dialogSidebar--search input::placeholder {
+        text-transform: uppercase;
+        color: #858585;
+    }
+
+    .mealsMenu {
+        display: flex;
+        flex-direction: column;
+        flex: 1;
+        border: 2px solid #D3B3F2;
+        border-radius: 10px;
+        background-color: white;
+        padding: 14px 6px 14px 14px;
+        margin-top: 5px;
+        min-height: 0;
+    }
+
+    .mealsMenuTitle {
+        text-align: center;
+        font-size: 1.15rem;
+        font-weight: 400;
+        color: #858585;
+        font-family: 'Poppins', sans-serif;
+        margin: 0 0 8px 0;
+    }
+
+    .mealsScrollMenu {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+        list-style: none;
+        padding: 0 12px 4px 0;
+        gap: 12px;
+        margin: 0;
+        overflow: auto;
+        overscroll-behavior: contain;
+    }
+
+    .mealItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 50px;
+        background-color: #f5f3f0;
+        padding: 10px 10px 10px 22px;
+    }
+
+    .mealName {
+        flex: 1;
+        color: #858585;
+        font-size: 0.9rem;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    .btnSelectMeal {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 45px;
+        height: 45px;
+        color: #D1D0D0;
+        border: 2px solid #D1D0D0;
+        border-radius: 50%;
+        background-color: white;
+        font-size: 1.2rem;
+    }
+
+    /* bloquer le scroll sur la page calorie lorsque la pop-up est ouverte */
+    body:has(.meal-dialog[open]) {
+        overflow: hidden;
+        overscroll-behavior: none;
     }
 }
