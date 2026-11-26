@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Be Healthy - Page Entraînements</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="page_entrainement.css">
 </head>
 <body>
 
     <div class="mobile-frame">
-        <span class="page-label">Page entraînements</span>
+        
 
         <!-- Barre de recherche -->
         <div class="search-container">
@@ -19,7 +19,7 @@
         <!-- Menus déroulants (Muscles, Séances, Exercices) -->
         <div class="dropdown-group">
             <select id="muscleSelect" class="pill-dropdown">
-                <option value="">Muscles &#9660;</option>
+                <option value="">Muscles ▼</option>
                 <option value="pectoraux">Pectoraux</option>
                 <option value="epaules">Épaules</option>
                 <option value="biceps">Biceps</option>
@@ -30,7 +30,7 @@
             </select>
 
             <select id="seanceSelect" class="pill-dropdown">
-                <option value="">Séances &#9660;</option>
+                <option value="">Séances ▼</option>
                 <option value="pecs_triceps">Pecs & Triceps</option>
                 <option value="haut_corps">Haut du Corps</option>
                 <option value="core_abs">Core & Abs</option>
@@ -38,7 +38,7 @@
             </select>
 
             <select id="exerciceSelect" class="pill-dropdown">
-                <option value="">Exercices &#9660;</option>
+                <option value="">Exercices ▼</option>
                 <option value="developpe_couche">Développé Couché</option>
                 <option value="elevation_laterale">Élévation Latérale</option>
                 <option value="pompes">Pompes</option>
@@ -50,20 +50,25 @@
             </select>
         </div>
 
-        <!-- Muscle sélectionné -->
         <div class="muscle-badge">
             <span id="selectedMuscleName">ABDOMEN</span>
         </div>
 
-        <!-- Visuel du corps humain -->
         <div class="body-wrapper">
-            <img src="D:/SAE/be-healthy/image/corps.PNG" alt="Corps humain interactif" class="body-image">
+            <img src="image/corps.PNG" alt="Corps humain interactif" class="body-image">
         </div>
 
-        <!-- Bouton VOIR SÉANCES -->
         <button id="btnVoirSeances" class="btn-primary-pill">VOIR SÉANCES</button>
 
-        <!-- Barre de navigation inférieure -->
+        <div id="popupModal" class="modal hidden">
+            <div class="modal-content">
+                <button id="closeModalBtn" class="close-btn"> x</button>
+                <h3 id="modalTitle">Titre</h3>
+                <div id="modalBody"></div>
+                <button id="btnFavori" class="btn-favori">☆ Ajouter aux favoris</button>
+            </div>
+        </div>
+
         <nav class="bottom-navbar">
             <a href="accueil.php" class="nav-icon">🏠</a>
             <a href="entrainement.php" class="nav-icon active">💪</a>
@@ -73,5 +78,6 @@
         </nav>
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>
