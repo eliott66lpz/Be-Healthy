@@ -1,0 +1,102 @@
+
+body {
+    padding-bottom: 70px;
+    background-color: #f2f0ec;
+    margin: 0;
+    font-family: 'Anton', sans-serif;
+}
+
+@font-face {
+    font-family: "Anton";
+    src:
+        local('./fonts/Anton'),
+        url('./fonts/Anton-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "Poppins";
+    src:
+            local('./fonts/Poppins'),
+            url('./fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@media (max-width: 768px) and (orientation: portrait) {
+
+    /* Barre de séparation */
+    .bottom-bar {
+        position: fixed;
+        bottom: 65px;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        border: none;
+        height: 3px;
+        background-color: #D3B3F2;
+    }
+
+    /* Barre de navigation */
+    .bottom-navivation {
+        position: fixed;
+        width: 100%;
+        height: 65px;
+        bottom: 0;
+        left: 0;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* Icones de la barre de navigation */
+    .bottom-navivation > a {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+    }
+
+    /* SVG des icones de la barre de navigation */
+    .bottom-navivation > a > svg {
+        width: 32px;
+        height: 32px;
+    }
+
+
+    /* Page Calories */
+    .kcal-progression {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .text-kcal {
+        position: absolute;
+        text-align: center;
+    }
+
+    .calories, .unit {
+        display: block;
+        color: #D3B3F2;
+    }
+
+    .calories {
+        font-size: 45px;
+    }
+
+    .unit {
+        font-size: 20px;
+    }
+
+    /* Ajout des repas - Page Calories */
+    .meal label {
+        font-family: 'Poppins', sans-serif;
+    }
+}
